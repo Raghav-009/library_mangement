@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+        nav {
+            background-color: #555;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5em;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+        .container {
+            padding: 20px;
+            margin: auto;
+            max-width: 800px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form label, form input, form select, form button {
+            margin: 10px 0;
+        }
+        input[type="text"], input[type="date"], select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Library Management System</h1>
+    </header>
+    <nav>
+        <a href="#book-issue">Book Issue</a>
+        <a href="#return-book">Return Book</a>
+        <a href="#fine-pay">Fine Pay</a>
+        <a href="#membership">Membership</a>
+    </nav>
+
+    <div class="container" id="book-issue">
+        <h2>Book Issue</h2>
+        <form id="bookIssueForm">
+            <label for="bookName">Name of Book:</label>
+            <input type="text" id="bookName" required>
+
+            <label for="authorName">Author Name:</label>
+            <input type="text" id="authorName" readonly>
+
+            <label for="issueDate">Issue Date:</label>
+            <input type="date" id="issueDate" min="">
+
+            <label for="returnDate">Return Date (Max 15 days):</label>
+            <input type="date" id="returnDate">
+
+            <label for="remarks">Remarks:</label>
+            <input type="text" id="remarks">
+
+            <button type="submit">Submit</button>
+            <p class="error" id="bookIssueError"></p>
+        </form>
+    </div>
+
+    <div class="container" id="return-book">
+        <h2>Return Book</h2>
+        <form id="returnBookForm">
+            <label for="returnBookName">Name of Book:</label>
+            <input type="text" id="returnBookName" required>
+
+            <label for="returnAuthorName">Author Name:</label>
+            <input type="text" id="returnAuthorName" readonly>
+
+            <label for="serialNo">Serial No:</label>
+            <input type="text" id="serialNo" required>
+
+            <label for="returnDateConfirm">Return Date:</label>
+            <input type="date" id="returnDateConfirm">
+
+            <button type="submit">Confirm Return</button>
+            <p class="error" id="returnBookError"></p>
+        </form>
+    </div>
+
+    <div class="container" id="fine-pay">
+        <h2>Fine Pay</h2>
+        <form id="finePayForm">
+            <label for="fineAmount">Fine Amount:</label>
+            <input type="text" id="fineAmount" readonly>
+
+            <label for="finePaid">Fine Paid:</label>
+            <input type="checkbox" id="finePaid">
+
+            <label for="fineRemarks">Remarks:</label>
+            <input type="text" id="fineRemarks">
+
+            <button type="submit">Pay Fine</button>
+            <p class="error" id="finePayError"></p>
+        </form>
+    </div>
+
+    <div class="container" id="membership">
+        <h2>Membership</h2>
+        <form id="membershipForm">
+            <label for="membershipNumber">Membership Number:</label>
+            <input type="text" id="membershipNumber" required>
+
+            <label for="membershipOption">Membership Duration:</label>
+            <select id="membershipOption">
+                <option value="6">6 Months</option>
+                <option value="12">1 Year</option>
+                <option value="24">2 Years</option>
+            </select>
+
+            <button type="submit">Update Membership</button>
+            <p class="error" id="membershipError"></p>
+        </form>
+    </div>
+
+    <script>
+        // Set default issue date and return date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('issueDate').setAttribute('min', today);
+        document.getElementById('issueDate').addEventListener('change', function () {
+            const issueDate = new Date(this.value);
+            const returnDate = new Date(issueDate);
+            returnDate.setDate(issueDate.getDate() + 15);
+            document.getElementById('returnDate').setAttribute('max', returnDate.toISOString().split('T')[0]);
+        });
+
+        // Book Issue Form Validation
+        document.getElementById('bookIssueForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const bookName = document.getElementById('bookName').value;
+            const issueDate = document.getElementById('issueDate').value;
+            if (!bookName || !issueDate) {
+                document.getElementById('bookIssueError').innerText = "Please fill in all required fields.";
+            } else {
+                alert("Book Issued Successfully!");
+            }
+        });
+    </script>
+</body>
+</html>

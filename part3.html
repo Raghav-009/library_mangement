@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+        nav {
+            background-color: #555;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5em;
+            display: none; /* Hide nav initially */
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+        .container {
+            padding: 20px;
+            margin: auto;
+            max-width: 800px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form label, form input, form select, form button {
+            margin: 10px 0;
+        }
+        input[type="text"], input[type="date"], input[type="password"], select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Library Management System</h1>
+    </header>
+    <nav id="mainNav">
+        <a href="#book-issue">Book Issue</a>
+        <a href="#return-book">Return Book</a>
+        <a href="#fine-pay">Fine Pay</a>
+        <a href="#membership">Membership</a>
+        <a href="#maintenance">Maintenance</a>
+    </nav>
+
+    <!-- Login Page -->
+    <div class="container" id="login">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+
+            <button type="submit">Login</button>
+	    <button type="submit">Cancel</button>
+            <p class="error" id="loginError"></p>
+        </form>
+    </div>
+
+    <!-- Book Issue -->
+    <div class="container" id="book-issue" style="display:none;">
+        <h2>Book Issue</h2>
+        <form id="bookIssueForm">
+            <label for="bookName">Name of Book:</label>
+            <input type="text" id="bookName" required>
+
+            <label for="authorName">Author Name:</label>
+            <input type="text" id="authorName" readonly>
+
+            <label for="issueDate">Issue Date:</label>
+            <input type="date" id="issueDate" min="">
+
+            <label for="returnDate">Return Date (Max 15 days):</label>
+            <input type="date" id="returnDate">
+
+            <label for="remarks">Remarks:</label>
+            <input type="text" id="remarks">
+
+            <button type="submit">Submit</button>
+            <p class="error" id="bookIssueError"></p>
+        </form>
+    </div>
+
+    <!-- Return Book -->
+    <div class="container" id="return-book" style="display:none;">
+        <h2>Return Book</h2>
+        <form id="returnBookForm">
+            <label for="returnBookName">Name of Book:</label>
+            <input type="text" id="returnBookName" required>
+
+            <label for="returnAuthorName">Author Name:</label>
+            <input type="text" id="returnAuthorName" readonly>
+
+            <label for="serialNo">Serial No:</label>
+            <input type="text" id="serialNo" required>
+
+            <label for="returnDateConfirm">Return Date:</label>
+            <input type="date" id="returnDateConfirm">
+
+            <button type="submit">Confirm Return</button>
+            <p class="error" id="returnBookError"></p>
+        </form>
+    </div>
+
+    <!-- Maintenance Page -->
+    <div class="container" id="maintenance" style="display:none;">
+        <h2>Maintenance</h2>
+        <p>Admin Access Only</p>
+        <form id="maintenanceForm">
+            <label for="task">Select Task:</label>
+            <select id="task">
+                <option value="reports">Generate Reports</option>
+                <option value="transactions">View Transactions</option>
+            </select>
+
+            <button type="submit">Execute</button>
+        </form>
+    </div>
+
+    <script>
+        // Prevent access to all pages until login
+        const mainNav = document.getElementById('mainNav');
+        const containers = document.querySelectorAll('.container');
+
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === "admin" && password === "password") {
+                alert("Login Successful!");
+                document.getElementById('login').style.display = 'none';
+                mainNav.style.display = 'flex';
+                document.getElementById('book-issue').style.display = 'block';
+            }
+		if (username === "user" && password === "user") {
+                alert("Login Successful!");
+                document.getElementById('login').style.display = 'none';
+                mainNav.style.display = 'flex';
+                document.getElementById('book-issue').style.display = 'block';
+		document.getElementById('maintenance').style.display = 'none';
+		            }
+ 		else {
+                document.getElementById('loginError').innerText = "Invalid credentials.";
+            }
+        });
+    </script>
+</body>
+</html>
